@@ -14,18 +14,14 @@ export default class Todo extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const { input } = this.state;
-    const allItems = this.state.items;
-    allItems.push(input);
     this.setState({
-      items: allItems,
+      items: [...this.state.items, input],
       input: "",
     });
   };
   remove(id) {
-    const allItems = this.state.items;
-    allItems.splice(id, 1);
     this.setState({
-      items: allItems,
+      items: this.state.items.filter((item, key) => key !== id),
     });
   }
   render() {

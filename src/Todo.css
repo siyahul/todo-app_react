@@ -4,12 +4,11 @@ body {
   margin: 0;
 }
 .todo {
-  position: absolute;
+  text-align: center;
+  margin: auto;
+  margin-top: 30px;
   width: 300px;
   height: 500px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   text-align: center;
 }
 .todo__inputSection {
@@ -54,4 +53,5 @@ ul li {
 ul li i {
   text-align: right;
   flex: 1;
+  cursor: pointer;
 }
