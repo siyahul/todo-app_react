@@ -50,8 +50,37 @@ ul li {
   color: #08869e;
   box-shadow: 0px 4px 6px #00000066;
 }
-ul li i {
-  text-align: right;
+ul li  div{
+  display: flex;
   flex: 1;
+}
+ul li form{
+  display: flex;
+}
+ul li div i {
+  
+  justify-content: flex-end;
+}
+#icons{
+  display: flex;
+  text-align: right;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+.fa-pencil:before{
+  margin:10px;
+}
+#todo__liInput{
+  
+  border-radius: 5px;
+  width: 100%;
+  border: 1px solid #106879;
+  padding: 8px;
+  box-sizing: border-box;
+  background-color: #055565;
+  outline: none;
+  color: #08869e;
+}
+.fa-ban{
   cursor: pointer;
 }
