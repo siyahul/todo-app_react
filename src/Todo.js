@@ -1,25 +1,26 @@
 import React, { Component } from "react";
+import Form from "./Utils/Form";
+import Input from "./Utils/Input";
+
 import "./Todo.css";
 
 export default class Todo extends Component {
   state = {
-    text: "",
     edit: false,
     items: [],
     tid: null,
-    temp: "",
+    editing: "",
   };
   handleChange = (event) => {
     this.setState({
-      input: event.target.value,
+      [event.target.name]: event.target.value,
     });
   };
-  handleSubmit = (event) => {
+  handleSubmit = () => (event) => {
     event.preventDefault();
-    const { input } = this.state;
     this.setState({
-      items: [...this.state.items, input],
-      input: "",
+      items: [...this.state.items, this.state.title],
+      title: "",
     });
   };
   remove(id) {
@@ -27,60 +28,67 @@ export default class Todo extends Component {
       items: this.state.items.filter((item, key) => key !== id),
     });
   }
-  edit = (id) => {
-    this.setState({ edit: true, tid: id });
+  handleEdit = (id, item) => {
+    this.setState({ edit: true, tid: id, editing: item });
   };
-  onChangeEdit = (event) => {
-    this.setState({ temp: event.target.value });
-  };
-  editSubmit = (id, event) => {
+  submitEdited = (id) => (event) => {
     event.preventDefault();
-    const { temp, items } = this.state;
+    const { editing, items } = this.state;
     const allItems = items;
-    allItems[id] = temp;
+    allItems[id] = editing;
     this.setState({
       items: allItems,
       edit: false,
     });
   };
-  cancel = () =>{
-    this.setState({ edit: false});
-  }  
+  cancel = () => {
+    this.setState({ edit: false });
+  };
   render() {
-    const { input, items, edit, temp, tid } = this.state;
+    const { items, edit, tid } = this.state;
+    const title = "title";
     return (
       <div className="todo">
-        <form className="todo__inputSection" onSubmit={this.handleSubmit}>
+        <Form
+          className="todo__inputSection"
+          name={title}
+          onSubmit={this.handleSubmit()}
+        >
           <h1>Todo App</h1>
-          <input
+          <Input
             placeholder="Enter items"
             className="todo__inputSection__input"
-            value={input}
+            name={title}
+            value={this.state.title}
             onChange={this.handleChange}
-          ></input>
-        </form>
+          ></Input>
+        </Form>
         <ul>
-          {items.map((item, ids) => (
+          {items.map((item, key) => (
             <li>
-              {edit && tid == ids ? (
+              {edit && tid == key ? (
                 <div>
-                <form onSubmit={this.editSubmit.bind(this, ids)}>
-                  <input id="todo__liInput" placeholder={item} onChange={this.onChangeEdit} />
-                </form>
-                <i class="fas fa-ban" onClick={this.cancel}></i>
+                  <Form onSubmit={this.submitEdited(key)}>
+                    <Input
+                      id="todo__liInput"
+                      value={this.state.editing}
+                      name="editing"
+                      onChange={this.handleChange}
+                    />
+                  </Form>
+                  <i class="fas fa-ban" onClick={this.cancel}></i>
                 </div>
-                
               ) : (
                 <div>
                   {item}{" "}
                   <div id="icons">
                     <i
-                      onClick={() => this.edit(ids)}
+                      onClick={() => this.handleEdit(key, item)}
                       className="fa fa-pencil"
                       aria-hidden="true"
                     ></i>
                     <i
-                      onClick={() => this.remove(ids)}
+                      onClick={() => this.remove(key)}
                       className="fas fa-trash-alt"
                     ></i>
                   </div>
